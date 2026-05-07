@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#1E293B" />
+  <title>Qui sommes-nous ? — Koupat Hayechouot Rashbi</title>
+  <meta name="description" content="L'association Koupat Hayechouot Rashbi soutient spirituellement et matériellement les familles juives en difficulté : prières au Kotel et sur les tombes des Tsadikim, aides alimentaires, accompagnement aux fêtes." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Frank+Ruhl+Libre:wght@400;700&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#1E293B', cream: '#F9FAFB',
+            gold: { DEFAULT: '#D4AF37', dark: '#B8941F', light: '#E8C75A' },
+            night: '#0F172A',
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            hebrew: ['"Frank Ruhl Libre"', 'serif'],
+          },
+          boxShadow: {
+            'soft': '0 10px 40px -10px rgba(30, 41, 59, 0.15)',
+            'gold': '0 10px 30px -10px rgba(212, 175, 55, 0.55)',
+          },
+          borderRadius: { '2xl': '1.25rem', '3xl': '1.75rem' },
+        },
+      },
+    };
+  </script>
+
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+
+<body class="bg-cream text-ink font-sans antialiased selection:bg-gold/30">
+
+  <!-- ================= HEADER ================= -->
+  <header id="site-header" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 md:h-20">
+        <a href="index.html" class="flex items-center gap-3 group">
+          <span class="logo-mark inline-flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-ink text-gold font-serif text-xl md:text-2xl shadow-soft">
+            <span aria-hidden="true">ק</span>
+          </span>
+          <span class="hidden sm:flex flex-col leading-tight">
+            <span class="header-brand font-serif text-lg md:text-xl font-semibold tracking-tight">Koupat Hayechouot</span>
+            <span class="header-brand-sub text-[11px] md:text-xs uppercase tracking-[0.2em]">Rashbi · קופת הישועות</span>
+          </span>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+          <a href="index.html" class="nav-link">Accueil</a>
+          <a href="qui-sommes-nous.html" class="nav-link nav-link-active">Qui sommes-nous ?</a>
+          <a href="contact.html" class="nav-link">Contact</a>
+        </nav>
+
+        <a href="https://www.allodons.fr/koupat-hayeshouot-rashbi" target="_blank" rel="noopener noreferrer" class="btn-donate-discrete hidden sm:inline-flex items-center">Faire un don</a>
+
+        <button id="menu-toggle" class="md:hidden p-2 menu-toggle-btn" aria-label="Menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur border-t border-ink/5">
+      <nav class="px-6 py-4 flex flex-col gap-4 text-ink font-medium">
+        <a href="index.html" class="py-2">Accueil</a>
+        <a href="qui-sommes-nous.html" class="py-2">Qui sommes-nous ?</a>
+        <a href="contact.html" class="py-2">Contact</a>
+        <a href="https://www.allodons.fr/koupat-hayeshouot-rashbi" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex items-center justify-center border-2 border-gold text-gold-dark font-semibold px-5 py-3 rounded-full">Faire un don</a>
+      </nav>
+    </div>
+  </header>
+
+
+  <!-- ================= PAGE BANNER ================= -->
+  <section class="relative h-[55vh] min-h-[380px] flex items-end overflow-hidden">
+    <div class="parallax-bg" style="background-image: url('assets/images/synagogue-interior.avif');"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-night/85 via-night/60 to-night/85"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 md:pb-20 w-full">
+      <div class="max-w-3xl reveal">
+        <p class="inline-flex items-center gap-2 text-gold uppercase tracking-[0.3em] text-xs mb-4">
+          <span class="block w-8 h-px bg-gold"></span>
+          L'association
+        </p>
+        <h1 class="font-serif text-white text-5xl md:text-6xl lg:text-7xl font-light leading-[1.05] tracking-tight">
+          Qui sommes-nous <em class="italic text-gold-light">?</em>
+        </h1>
+        <p class="mt-5 text-xl md:text-2xl text-white/90 font-serif italic">« Nous sommes là pour vous. »</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================= INTRO STATEMENT ================= -->
+  <section class="relative py-20 md:py-28 bg-cream">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+      <p class="text-xs uppercase tracking-[0.3em] text-gold-dark mb-3">Plus de 3 000 vies changées</p>
+      <p class="font-serif text-3xl md:text-4xl lg:text-5xl text-ink leading-tight">
+        Nous avons déjà réussi à changer la vie de plus de
+        <em class="italic text-gold-dark">3 000 hommes et femmes.</em>
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ================= LE PROJET ================= -->
+  <section class="relative py-20 md:py-28 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+      <div class="reveal">
+        <div class="aspect-[4/5] rounded-3xl overflow-hidden shadow-soft relative">
+          <img src="assets/images/rabbi-meir-baal-hanes.avif" alt="Tombe du Rabbi Meir Baal Hanes" class="w-full h-full object-cover" loading="lazy" />
+          <div class="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-night/85 to-transparent">
+            <p class="font-hebrew text-2xl text-gold-light" dir="rtl">רבי שמעון בר יוחאי</p>
+            <p class="text-white/85 text-sm mt-1">À la mémoire de Rabbi Shimon bar Yohaï</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal" style="--reveal-delay: 150ms;">
+        <p class="text-xs uppercase tracking-[0.3em] text-gold-dark mb-4">Notre projet</p>
+        <h2 class="font-serif text-4xl md:text-5xl text-ink leading-tight">
+          Un engagement <em class="italic text-gold-dark font-medium">spirituel</em><br />
+          et concret.
+        </h2>
+        <p class="mt-6 text-lg text-ink/80 leading-relaxed">
+          L'association <strong>Koupat Hayechouot Rashbi</strong> est reconnue avant tout pour son engagement spirituel,
+          notamment à travers la prière sur les tombes des Tsadikim, à la mémoire de
+          <strong>Rabbi Shimon bar Yohaï</strong>.
+        </p>
+        <p class="mt-4 text-lg text-ink/80 leading-relaxed">
+          Cependant, son action va bien au-delà de la dimension spirituelle. Elle joue également un rôle crucial dans
+          le <strong>soutien matériel aux familles en difficulté</strong>.
+        </p>
+        <p class="mt-4 text-lg text-ink/80 leading-relaxed">
+          À chaque fête juive — Pessa'h, Roch Hachana, Souccot, Hanouka — l'association distribue des
+          <strong>colis alimentaires, des bons d'achat et des aides financières</strong>
+          pour permettre aux plus démunis de célébrer dignement.
+        </p>
+        <p class="mt-4 text-lg text-ink/80 leading-relaxed">
+          Mais son aide ne se limite pas aux fêtes : tout au long de l'année, Koupat Hayechouot Rashbi accompagne les
+          familles confrontées aux épreuves de la vie — <strong>maladie, pauvreté, deuil</strong>, ou autres situations
+          de détresse — en leur offrant <em>écoute, réconfort et soutien concret</em>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================= LA DURE RÉALITÉ ================= -->
+  <section class="relative py-20 md:py-28 bg-night text-white overflow-hidden">
+    <div class="parallax-bg opacity-20" style="background-image: url('assets/images/old-tombstone.avif');"></div>
+    <div class="absolute inset-0 bg-night/80"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-14 reveal">
+        <p class="text-xs uppercase tracking-[0.3em] text-gold mb-3">Le constat</p>
+        <h2 class="font-serif text-4xl md:text-5xl">La dure réalité</h2>
+        <p class="mt-4 text-white/70">Derrière les chiffres, des femmes, des hommes et des enfants qui ont besoin d'aide.</p>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-5 md:gap-8">
+        <div class="reality-card reveal">
+          <p class="reality-num"><span class="counter" data-target="77000">0</span></p>
+          <p class="reality-label">Juifs vivent sous le seuil de pauvreté</p>
+        </div>
+        <div class="reality-card reveal" style="--reveal-delay: 100ms;">
+          <p class="reality-num"><span class="counter" data-target="30000">0</span></p>
+          <p class="reality-label">Sont des personnes âgées</p>
+        </div>
+        <div class="reality-card reveal" style="--reveal-delay: 200ms;">
+          <p class="reality-num"><span class="counter" data-target="25600">0</span></p>
+          <p class="reality-label">Sont des enfants</p>
+        </div>
+      </div>
+
+      <p class="mt-12 text-center text-white/70 max-w-2xl mx-auto reveal">
+        Chaque don nous permet d'agir concrètement face à cette réalité — un colis, une aide pour un mariage, un soutien à une veuve, à un orphelin.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ================= NOS ACTIONS (4 piliers) ================= -->
+  <section class="relative py-20 md:py-28 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto reveal">
+        <p class="text-xs uppercase tracking-[0.3em] text-gold-dark mb-3">Nos actions</p>
+        <h2 class="font-serif text-4xl md:text-5xl text-ink">Quatre piliers, un seul cœur</h2>
+      </div>
+
+      <div class="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <article class="mission-card group">
+          <div class="mission-icon">
+            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z"/></svg>
+          </div>
+          <h3 class="mission-title">Aide alimentaire</h3>
+          <p class="mission-text">Colis et bons d'achat distribués pour Pessa'h, Roch Hachana, Souccot, Hanouka et toute l'année, en toute discrétion.</p>
+          <span class="mission-bar"></span>
+        </article>
+
+        <article class="mission-card group">
+          <div class="mission-icon">
+            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.687-4.5-1.935 0-3.597 1.126-4.313 2.733C11.286 4.876 9.624 3.75 7.687 3.75 5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg>
+          </div>
+          <h3 class="mission-title">Mariages</h3>
+          <p class="mission-text">Aide à la dot, organisation et financement de mariages pour les familles qui n'en ont pas les moyens.</p>
+          <span class="mission-bar"></span>
+        </article>
+
+        <article class="mission-card group">
+          <div class="mission-icon">
+            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
+          </div>
+          <h3 class="mission-title">Veuves &amp; orphelins</h3>
+          <p class="mission-text">Soutien financier mensuel, accompagnement scolaire et moral des familles touchées par le deuil.</p>
+          <span class="mission-bar"></span>
+        </article>
+
+        <article class="mission-card group">
+          <div class="mission-icon">
+            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z M12 8v4l3 2"/></svg>
+          </div>
+          <h3 class="mission-title">Prières quotidiennes</h3>
+          <p class="mission-text">Vos noms cités au Kotel et sur les tombes des Tsadikim — Refouah Chéléma, Ilouy Nichmat, Zivoug Hagoun.</p>
+          <span class="mission-bar"></span>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================= QUOTE BREAK ================= -->
+  <section class="relative h-[50vh] min-h-[360px] overflow-hidden">
+    <div class="parallax-bg" style="background-image: url('assets/images/honi-cave.avif');"></div>
+    <div class="absolute inset-0 bg-night/75"></div>
+    <div class="relative z-10 h-full flex items-center justify-center px-6">
+      <div class="text-center text-white max-w-3xl reveal">
+        <p class="font-hebrew text-2xl md:text-3xl text-gold-light mb-4" dir="rtl">"וְהָיָה מַעֲשֵׂה הַצְּדָקָה שָׁלוֹם"</p>
+        <p class="font-serif text-2xl md:text-4xl italic font-light leading-snug">
+          « Le fruit de la Tsédaka, c'est la paix. »
+        </p>
+        <p class="mt-3 text-white/70 text-sm uppercase tracking-[0.3em]">Isaïe 32:17</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================= CTA ================= -->
+  <section class="relative py-20 md:py-28 bg-cream">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+      <p class="text-xs uppercase tracking-[0.3em] text-gold-dark mb-3">Soutenir l'association</p>
+      <h2 class="font-serif text-4xl md:text-5xl text-ink leading-tight">Rejoignez la chaîne de la générosité.</h2>
+      <p class="mt-4 text-lg text-ink/70 max-w-xl mx-auto">
+        Chaque don ouvre droit à un reçu fiscal Cerfa — 66 % déductibles de vos impôts.
+      </p>
+
+      <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="https://www.allodons.fr/koupat-hayeshouot-rashbi" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-ink font-semibold px-8 py-4 rounded-full shadow-gold transition transform hover:-translate-y-0.5">
+          Faire un don sur AlloDons
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 3h7v7M10 14L21 3"/></svg>
+        </a>
+        <a href="contact.html" class="inline-flex items-center justify-center gap-2 border border-ink/20 hover:border-ink text-ink px-8 py-4 rounded-full transition">
+          Nous contacter
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-night text-white/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid md:grid-cols-4 gap-10">
+
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-3 mb-5">
+            <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold text-ink font-serif text-2xl">ק</span>
+            <div>
+              <p class="font-serif text-xl text-white font-semibold">Koupat Hayechouot Rashbi</p>
+              <p class="text-xs uppercase tracking-[0.2em] text-gold">קופת הישועות</p>
+            </div>
+          </div>
+          <p class="max-w-md text-sm leading-relaxed">
+            Association loi 1901 reconnue d'intérêt général. Vos dons sont déductibles à hauteur de 66 % de l'impôt sur le revenu (Cerfa).
+          </p>
+
+          <div class="mt-6 flex items-center gap-3">
+            <a href="#" aria-label="Instagram" class="social-link"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163C8.741 0 8.332.013 7.052.072 2.695.272.273 2.69.073 7.052.014 8.332 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.013 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+            <a href="#" aria-label="Facebook" class="social-link"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+            <a href="#" aria-label="WhatsApp" class="social-link"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg></a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-serif text-white text-lg mb-4">Navigation</h4>
+          <ul class="space-y-2.5 text-sm">
+            <li><a href="index.html" class="hover:text-gold transition">Accueil</a></li>
+            <li><a href="qui-sommes-nous.html" class="hover:text-gold transition">Qui sommes-nous ?</a></li>
+            <li><a href="contact.html" class="hover:text-gold transition">Contact</a></li>
+            <li><a href="https://www.allodons.fr/koupat-hayeshouot-rashbi" target="_blank" rel="noopener noreferrer" class="hover:text-gold transition">Faire un don</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-serif text-white text-lg mb-4">Contact</h4>
+          <ul class="space-y-2.5 text-sm">
+            <li>2 rue Louis Lebrun</li>
+            <li>95200 Sarcelles, France</li>
+            <li><a href="tel:+33756922004" class="hover:text-gold transition">07 56 92 20 04</a></li>
+            <li><a href="mailto:koupathayeshouotrashbi@gmail.com" class="hover:text-gold transition break-all">koupathayeshouotrashbi@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-12 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-white/50">
+        <p>© <span id="year"></span> Koupat Hayechouot Rashbi · Association loi 1901. Tous droits réservés.</p>
+        <div class="flex items-center gap-5">
+          <a href="#" class="hover:text-gold transition">Mentions légales</a>
+          <a href="#" class="hover:text-gold transition">Politique de confidentialité</a>
+          <a href="#" class="hover:text-gold transition">Cerfa / Reçu fiscal</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/script.js" defer></script>
+</body>
+</html>
