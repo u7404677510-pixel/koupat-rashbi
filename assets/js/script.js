@@ -9,33 +9,56 @@
    - Contact form (validation + success state)
 ============================================================ */
 
+/* ============================================================
+   Module ES — chargé via <script type="module">.
+   Branché à Firebase Firestore pour la centralisation des leads.
+============================================================ */
+
+import { db } from './firebase-init.js';
+import {
+  collection, addDoc, serverTimestamp,
+} from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
+
 (() => {
   'use strict';
 
   /* ============================================================
-     LEADS PERSISTENCE (localStorage)
-     Used by both forms — read by /admin.html
+     LEADS PERSISTENCE
+     - Source de vérité : Firestore (collection "leads")
+     - Fallback localStorage si l'écriture distante échoue
+       (réseau, règles bloquantes, quotas)
   ============================================================ */
-  const LEADS_KEY = 'kpht-leads';
+  const LEADS_KEY = 'kpht-leads-fallback';
 
-  const saveLead = (type, data) => {
+  const localFallback = (type, data) => {
     try {
       const existing = JSON.parse(localStorage.getItem(LEADS_KEY) || '[]');
       existing.push({
         id: 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
-        type, // "callback" | "contact"
-        receivedAt: new Date().toISOString(),
+        type, receivedAt: new Date().toISOString(),
         userAgent: navigator.userAgent,
         page: window.location.pathname,
-        data,
+        data, _offline: true,
       });
       localStorage.setItem(LEADS_KEY, JSON.stringify(existing));
-    } catch (e) {
-      console.warn('[Leads] localStorage unavailable:', e);
+    } catch {}
+  };
+
+  const saveLead = async (type, data) => {
+    try {
+      const ref = await addDoc(collection(db, 'leads'), {
+        type,
+        receivedAt: serverTimestamp(),
+        page: window.location.pathname,
+        userAgent: navigator.userAgent,
+        data,
+      });
+      console.log('[Firestore] Lead enregistré', ref.id);
+    } catch (err) {
+      console.warn('[Firestore] Échec — fallback localStorage', err);
+      localFallback(type, data);
     }
   };
-  // Expose so admin can refresh from same tab
-  window.__kpht = { LEADS_KEY };
 
   /* ---------- Footer year ---------- */
   const yearEl = document.getElementById('year');

@@ -51,6 +51,7 @@
     }
     .badge-callback { background: rgba(212,175,55,0.15); color: var(--gold-dark); }
     .badge-contact  { background: rgba(30,41,59,0.08);  color: var(--ink); }
+    .badge-offline  { background: rgba(220,38,38,0.1); color: #DC2626; }
     .row-card {
       background: #fff;
       border: 1px solid rgba(30,41,59,0.06);
@@ -82,8 +83,16 @@
       transition: all .2s ease; cursor: pointer;
     }
     .filter-pill:hover { border-color: rgba(212,175,55,0.6); color: var(--ink); }
-    .filter-pill.active {
-      background: var(--ink); border-color: var(--ink); color: #fff;
+    .filter-pill.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .live-dot {
+      display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+      background: #16A34A;
+      box-shadow: 0 0 0 0 rgba(22,163,74,0.6);
+      animation: pulse 2s ease-out infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(22,163,74,0.5); }
+      80%, 100% { box-shadow: 0 0 0 10px rgba(22,163,74,0); }
     }
   </style>
 </head>
@@ -101,22 +110,25 @@
         </div>
       </div>
 
-      <h1 class="font-serif text-2xl text-ink mb-2">Accès restreint</h1>
-      <p class="text-sm text-ink/60 mb-6">Saisissez le mot de passe pour consulter les leads collectés.</p>
+      <h1 class="font-serif text-2xl text-ink mb-2">Connexion</h1>
+      <p class="text-sm text-ink/60 mb-6">Connectez-vous avec votre compte administrateur Firebase.</p>
 
-      <label for="password" class="block text-xs font-medium text-ink/70 mb-1.5">Mot de passe</label>
-      <input id="password" type="password" autocomplete="current-password" class="w-full px-4 py-3.5 rounded-xl border border-ink/15 bg-cream focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition" autofocus />
+      <label for="email" class="block text-xs font-medium text-ink/70 mb-1.5">Email</label>
+      <input id="email" type="email" required autocomplete="email" class="w-full px-4 py-3.5 rounded-xl border border-ink/15 bg-cream focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition" autofocus />
 
-      <p id="login-error" class="hidden mt-3 text-sm text-red-600">Mot de passe incorrect.</p>
+      <label for="password" class="block text-xs font-medium text-ink/70 mb-1.5 mt-4">Mot de passe</label>
+      <input id="password" type="password" required autocomplete="current-password" class="w-full px-4 py-3.5 rounded-xl border border-ink/15 bg-cream focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition" />
 
-      <button type="submit" class="mt-6 w-full btn btn-primary justify-center py-3.5 text-base">
-        Se connecter
+      <p id="login-error" class="hidden mt-3 text-sm text-red-600"></p>
+
+      <button id="login-btn" type="submit" class="mt-6 w-full btn btn-primary justify-center py-3.5 text-base">
+        <span id="login-btn-text">Se connecter</span>
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
       </button>
 
       <p class="mt-6 text-xs text-ink/50 text-center">
-        Cette page n'est pas référencée publiquement.<br />
-        En cas d'oubli, modifiez la valeur <code class="text-gold-dark">ADMIN_PASSWORD</code> dans <code>admin.html</code>.
+        Le compte se crée dans la console Firebase →<br />
+        <strong>Authentication</strong> → <strong>Add user</strong>.
       </p>
     </form>
   </div>
@@ -125,17 +137,19 @@
   <!-- ============== DASHBOARD VIEW ============== -->
   <div id="dashboard-view" class="hidden">
 
-    <!-- Top bar -->
     <header class="bg-night text-white border-b border-white/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-gold text-ink font-serif text-lg">ק</span>
           <div>
             <p class="font-serif text-base font-semibold leading-tight">Admin · Koupat Hayechouot</p>
-            <p class="text-[10px] uppercase tracking-[0.2em] text-gold">Tableau de bord</p>
+            <p class="text-[10px] uppercase tracking-[0.2em] text-gold flex items-center gap-1.5">
+              <span class="live-dot"></span> En direct (Firestore)
+            </p>
           </div>
         </div>
         <div class="flex items-center gap-3">
+          <span id="current-user" class="text-xs text-white/60 hidden sm:inline"></span>
           <a href="index.html" class="text-xs text-white/60 hover:text-gold transition hidden sm:inline">← Retour au site</a>
           <button id="logout-btn" class="text-xs px-3 py-1.5 rounded-full border border-white/20 hover:border-gold hover:text-gold transition">Déconnexion</button>
         </div>
@@ -143,15 +157,6 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
-
-      <!-- Banner notice -->
-      <div class="mb-6 p-4 rounded-xl bg-gold/10 border border-gold/30 flex items-start gap-3">
-        <svg class="w-5 h-5 text-gold-dark flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <div class="text-sm text-ink/80">
-          <p class="font-medium text-ink">Mode local — stockage sur ce navigateur uniquement.</p>
-          <p class="mt-0.5 text-ink/65">Les leads sont conservés dans le <code>localStorage</code> de ce navigateur. Pour une centralisation multi-appareils, branchez les formulaires à Formspree, Make.com ou un backend dédié.</p>
-        </div>
-      </div>
 
       <!-- Stats -->
       <div class="grid sm:grid-cols-3 gap-4 mb-8">
@@ -169,6 +174,15 @@
         </div>
       </div>
 
+      <!-- Offline fallback notice (only shown if there are leads in localStorage from a Firestore failure) -->
+      <div id="offline-banner" class="hidden mb-6 p-4 rounded-xl bg-red-50 border border-red-200 flex items-start gap-3">
+        <svg class="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        <div class="text-sm">
+          <p class="font-medium text-red-900"><span id="offline-count">0</span> lead(s) hors-ligne sur ce navigateur.</p>
+          <p class="mt-0.5 text-red-800/80">Ces leads n'ont pas pu être envoyés à Firestore (réseau ou règles). Voir ci-dessous, marqués <span class="badge badge-offline">offline</span>.</p>
+        </div>
+      </div>
+
       <!-- Toolbar -->
       <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
         <div class="flex items-center gap-2 flex-wrap">
@@ -178,90 +192,153 @@
         </div>
         <div class="flex items-center gap-2">
           <input id="search-input" type="search" placeholder="Rechercher (nom, email, téléphone…)" class="px-3 py-2 rounded-lg border border-ink/15 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition w-56" />
-          <button id="refresh-btn" class="btn btn-ghost" title="Rafraîchir">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-          </button>
           <button id="export-csv-btn" class="btn btn-gold">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
             CSV
           </button>
-          <button id="clear-btn" class="btn btn-danger">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M9 7V4a2 2 0 012-2h2a2 2 0 012 2v3"/></svg>
-            Vider
-          </button>
         </div>
       </div>
 
-      <!-- Leads list -->
       <div id="leads-list" class="space-y-3"></div>
+
       <div id="empty-state" class="hidden text-center py-20">
         <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-ink/5 mb-4">
           <svg class="w-8 h-8 text-ink/40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
         </div>
         <p class="font-serif text-xl text-ink">Aucun lead pour le moment.</p>
-        <p class="text-sm text-ink/55 mt-1">Les demandes de rappel et messages de contact apparaîtront ici.</p>
+        <p class="text-sm text-ink/55 mt-1">Les nouvelles demandes apparaîtront ici en temps réel.</p>
+      </div>
+
+      <div id="loading-state" class="text-center py-20 hidden">
+        <div class="inline-flex items-center gap-3 text-ink/60">
+          <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          Chargement des leads…
+        </div>
       </div>
 
     </main>
   </div>
 
 
-  <script>
-    /* ============================================================
-       ⚠️ Mot de passe — modifiez ici. (Protection légère côté
-       navigateur uniquement, NON adaptée à de la vraie sécurité.)
-    ============================================================ */
-    const ADMIN_PASSWORD = 'koupat2025';
-    const SESSION_KEY = 'kpht-admin-session';
-    const LEADS_KEY   = 'kpht-leads';
+  <script type="module">
+    import { auth, db } from './assets/js/firebase-init.js';
+    import {
+      signInWithEmailAndPassword, signOut, onAuthStateChanged,
+    } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js';
+    import {
+      collection, query, orderBy, onSnapshot,
+    } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
 
     const $ = (sel) => document.querySelector(sel);
     const $$ = (sel) => document.querySelectorAll(sel);
 
-    /* ---------- Auth ---------- */
-    const showDashboard = () => {
+    /* ---------- Views ---------- */
+    const showDashboard = (user) => {
       $('#login-view').classList.add('hidden');
       $('#dashboard-view').classList.remove('hidden');
-      render();
+      $('#current-user').textContent = user.email;
+      attachLeadsListener();
+      checkOfflineFallback();
     };
     const showLogin = () => {
       $('#dashboard-view').classList.add('hidden');
       $('#login-view').classList.remove('hidden');
+      detachLeadsListener();
     };
 
-    if (sessionStorage.getItem(SESSION_KEY) === 'ok') showDashboard();
+    /* ---------- Auth state ---------- */
+    onAuthStateChanged(auth, (user) => {
+      if (user) showDashboard(user);
+      else showLogin();
+    });
 
-    $('#login-form').addEventListener('submit', (e) => {
+    $('#login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const v = $('#password').value;
-      if (v === ADMIN_PASSWORD) {
-        sessionStorage.setItem(SESSION_KEY, 'ok');
-        $('#login-error').classList.add('hidden');
-        showDashboard();
-      } else {
-        $('#login-error').classList.remove('hidden');
-        $('#password').focus();
-        $('#password').select();
+      const email = $('#email').value.trim();
+      const password = $('#password').value;
+      const errEl = $('#login-error');
+      const btnText = $('#login-btn-text');
+      errEl.classList.add('hidden');
+      btnText.textContent = 'Connexion…';
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        // onAuthStateChanged will switch the view
+      } catch (err) {
+        const map = {
+          'auth/invalid-email':       'Email invalide.',
+          'auth/user-not-found':      'Aucun compte avec cet email.',
+          'auth/wrong-password':      'Mot de passe incorrect.',
+          'auth/invalid-credential':  'Identifiants incorrects.',
+          'auth/too-many-requests':   'Trop de tentatives, réessayez plus tard.',
+          'auth/network-request-failed': 'Pas de connexion réseau.',
+        };
+        errEl.textContent = map[err.code] || ('Erreur : ' + err.message);
+        errEl.classList.remove('hidden');
+      } finally {
+        btnText.textContent = 'Se connecter';
       }
     });
 
-    $('#logout-btn').addEventListener('click', () => {
-      sessionStorage.removeItem(SESSION_KEY);
-      $('#password').value = '';
-      showLogin();
+    $('#logout-btn').addEventListener('click', async () => {
+      await signOut(auth);
     });
 
-    /* ---------- Data ---------- */
-    const loadLeads = () => {
-      try { return JSON.parse(localStorage.getItem(LEADS_KEY) || '[]'); }
+    /* ---------- Firestore live listener ---------- */
+    let unsubscribe = null;
+    let leadsCache = [];
+
+    const attachLeadsListener = () => {
+      if (unsubscribe) return;
+      $('#loading-state').classList.remove('hidden');
+      const q = query(collection(db, 'leads'), orderBy('receivedAt', 'desc'));
+      unsubscribe = onSnapshot(q, (snap) => {
+        leadsCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        $('#loading-state').classList.add('hidden');
+        render();
+      }, (err) => {
+        console.error('[Firestore] onSnapshot error', err);
+        $('#loading-state').classList.add('hidden');
+        $('#empty-state').classList.remove('hidden');
+        $('#empty-state').innerHTML = `
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 mb-4">
+            <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
+          </div>
+          <p class="font-serif text-xl text-ink">Erreur de chargement</p>
+          <p class="text-sm text-ink/55 mt-1">Vérifiez les Firestore Rules et votre connexion.</p>
+          <p class="text-xs text-red-600 mt-2 font-mono">${err.code || err.message}</p>`;
+      });
+    };
+    const detachLeadsListener = () => {
+      if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+    };
+
+    /* ---------- Offline fallback (legacy localStorage leads) ---------- */
+    const FALLBACK_KEY = 'kpht-leads-fallback';
+    const checkOfflineFallback = () => {
+      try {
+        const list = JSON.parse(localStorage.getItem(FALLBACK_KEY) || '[]');
+        if (list.length > 0) {
+          $('#offline-banner').classList.remove('hidden');
+          $('#offline-count').textContent = list.length;
+        }
+      } catch {}
+    };
+    const getOfflineLeads = () => {
+      try { return JSON.parse(localStorage.getItem(FALLBACK_KEY) || '[]'); }
       catch { return []; }
     };
 
+    /* ---------- Rendering ---------- */
     let currentFilter = 'all';
     let searchTerm = '';
 
-    const formatDate = (iso) => {
-      const d = new Date(iso);
+    const formatDate = (val) => {
+      // Firestore Timestamp or ISO string or Date
+      let d;
+      if (val && typeof val.toDate === 'function') d = val.toDate();
+      else if (typeof val === 'string') d = new Date(val);
+      else if (val instanceof Date) d = val;
+      else return '—';
       return d.toLocaleString('fr-FR', { dateStyle: 'medium', timeStyle: 'short' });
     };
 
@@ -279,17 +356,18 @@
     const renderRow = (lead) => {
       const d = lead.data || {};
       const isCallback = lead.type === 'callback';
+      const isOffline  = !!lead._offline;
       const fullname = `${d.firstname || ''} ${d.lastname || ''}`.trim() || '— inconnu —';
 
       const fields = isCallback ? [
-        ['Téléphone',  d.phone ? `<a href="tel:${escapeHtml(d.phone)}" class="text-ink hover:text-gold-dark">${escapeHtml(d.phone)}</a>` : '—'],
-        ['Email',      d.email ? `<a href="mailto:${escapeHtml(d.email)}" class="text-ink hover:text-gold-dark">${escapeHtml(d.email)}</a>` : '—'],
-        ['Créneau',    escapeHtml(slotLabel(d.slot))],
-        ['Message',    d.message ? escapeHtml(d.message) : '—'],
+        ['Téléphone', d.phone ? `<a href="tel:${escapeHtml(d.phone)}" class="text-ink hover:text-gold-dark">${escapeHtml(d.phone)}</a>` : '—'],
+        ['Email',     d.email ? `<a href="mailto:${escapeHtml(d.email)}" class="text-ink hover:text-gold-dark">${escapeHtml(d.email)}</a>` : '—'],
+        ['Créneau',   escapeHtml(slotLabel(d.slot))],
+        ['Message',   d.message ? escapeHtml(d.message) : '—'],
       ] : [
-        ['Email',      d.email ? `<a href="mailto:${escapeHtml(d.email)}" class="text-ink hover:text-gold-dark">${escapeHtml(d.email)}</a>` : '—'],
-        ['Objet',      escapeHtml(d.subject || '—')],
-        ['Message',    d.message ? escapeHtml(d.message) : '—'],
+        ['Email',     d.email ? `<a href="mailto:${escapeHtml(d.email)}" class="text-ink hover:text-gold-dark">${escapeHtml(d.email)}</a>` : '—'],
+        ['Objet',     escapeHtml(d.subject || '—')],
+        ['Message',   d.message ? escapeHtml(d.message) : '—'],
       ];
 
       const fieldsHtml = fields.map(([k, v]) => `
@@ -301,8 +379,9 @@
       return `
         <article class="row-card" data-id="${lead.id}">
           <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 flex-wrap">
               <span class="badge ${isCallback ? 'badge-callback' : 'badge-contact'}">${isCallback ? 'Rappel' : 'Contact'}</span>
+              ${isOffline ? '<span class="badge badge-offline">offline</span>' : ''}
               <p class="font-serif text-lg text-ink">${escapeHtml(fullname)}</p>
             </div>
             <p class="text-xs text-ink/50">${formatDate(lead.receivedAt)}</p>
@@ -314,30 +393,30 @@
     };
 
     const render = () => {
-      const all = loadLeads().sort((a,b) => new Date(b.receivedAt) - new Date(a.receivedAt));
-      const callback = all.filter(l => l.type === 'callback').length;
-      const contact  = all.filter(l => l.type === 'contact').length;
+      const remote = leadsCache;
+      const offline = getOfflineLeads();
+      const all = [...remote, ...offline].sort((a, b) => {
+        const da = a.receivedAt && a.receivedAt.toDate ? a.receivedAt.toDate() : new Date(a.receivedAt || 0);
+        const db = b.receivedAt && b.receivedAt.toDate ? b.receivedAt.toDate() : new Date(b.receivedAt || 0);
+        return db - da;
+      });
 
       $('#stat-total').textContent    = all.length.toLocaleString('fr-FR');
-      $('#stat-callback').textContent = callback.toLocaleString('fr-FR');
-      $('#stat-contact').textContent  = contact.toLocaleString('fr-FR');
+      $('#stat-callback').textContent = all.filter(l => l.type === 'callback').length.toLocaleString('fr-FR');
+      $('#stat-contact').textContent  = all.filter(l => l.type === 'contact').length.toLocaleString('fr-FR');
 
       let filtered = currentFilter === 'all' ? all : all.filter(l => l.type === currentFilter);
       if (searchTerm) {
         const q = searchTerm.toLowerCase();
-        filtered = filtered.filter(l => {
-          const blob = JSON.stringify(l.data || {}).toLowerCase();
-          return blob.includes(q);
-        });
+        filtered = filtered.filter(l => JSON.stringify(l.data || {}).toLowerCase().includes(q));
       }
 
       const list = $('#leads-list');
-      const empty = $('#empty-state');
       if (filtered.length === 0) {
         list.innerHTML = '';
-        empty.classList.remove('hidden');
+        $('#empty-state').classList.remove('hidden');
       } else {
-        empty.classList.add('hidden');
+        $('#empty-state').classList.add('hidden');
         list.innerHTML = filtered.map(renderRow).join('');
       }
     };
@@ -357,22 +436,24 @@
       render();
     });
 
-    $('#refresh-btn').addEventListener('click', render);
-
     /* ---------- CSV export ---------- */
     $('#export-csv-btn').addEventListener('click', () => {
-      const all = loadLeads();
+      const all = [...leadsCache, ...getOfflineLeads()];
       if (all.length === 0) { alert('Aucun lead à exporter.'); return; }
 
-      const headers = ['id','type','receivedAt','firstname','lastname','phone','email','subject','slot','message','page'];
+      const headers = ['id','type','receivedAt','firstname','lastname','phone','email','subject','slot','message','page','offline'];
       const rows = all.map(l => {
         const d = l.data || {};
         return headers.map(h => {
           let v = '';
-          if (h === 'id' || h === 'type' || h === 'receivedAt' || h === 'page') v = l[h] ?? '';
+          if (h === 'id' || h === 'type' || h === 'page') v = l[h] ?? '';
+          else if (h === 'receivedAt') {
+            const ts = l.receivedAt;
+            v = ts ? (ts.toDate ? ts.toDate().toISOString() : new Date(ts).toISOString()) : '';
+          }
+          else if (h === 'offline') v = l._offline ? 'yes' : '';
           else v = d[h] ?? '';
           if (typeof v !== 'string') v = String(v);
-          // CSV escape
           if (v.includes('"') || v.includes(',') || v.includes('\n')) v = '"' + v.replace(/"/g, '""') + '"';
           return v;
         }).join(',');
@@ -386,21 +467,6 @@
       a.href = url; a.download = `leads-koupat-${stamp}.csv`;
       document.body.appendChild(a); a.click();
       document.body.removeChild(a); URL.revokeObjectURL(url);
-    });
-
-    /* ---------- Clear all ---------- */
-    $('#clear-btn').addEventListener('click', () => {
-      const all = loadLeads();
-      if (all.length === 0) { alert('Aucun lead à supprimer.'); return; }
-      const ok = confirm(`Supprimer définitivement les ${all.length} lead(s) stocké(s) sur ce navigateur ?\n\nCette action est irréversible.`);
-      if (!ok) return;
-      localStorage.removeItem(LEADS_KEY);
-      render();
-    });
-
-    /* ---------- Auto-refresh when other tabs add leads ---------- */
-    window.addEventListener('storage', (e) => {
-      if (e.key === LEADS_KEY) render();
     });
   </script>
 
