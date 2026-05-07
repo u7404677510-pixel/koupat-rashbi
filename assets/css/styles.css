@@ -370,3 +370,8 @@ input[type=number] { -moz-appearance: textfield; }
   50% { opacity: 0.7; }
 }
 #hero .animate-pulse { animation: glow 2.4s ease-in-out infinite; }
+
+/* ===== Hero text legibility — ombre portée subtile sur le titre ===== */
+#hero h1,
+#hero p { text-shadow: 0 2px 12px rgba(15, 23, 42, 0.45); }
+#hero .font-hebrew { text-shadow: 0 2px 8px rgba(15, 23, 42, 0.6); }

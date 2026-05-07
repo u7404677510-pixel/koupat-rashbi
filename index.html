@@ -94,8 +94,14 @@
 
   <!-- ================= HERO ================= -->
   <section id="hero" class="relative min-h-[88vh] md:min-h-[92vh] flex items-center overflow-hidden">
+    <!-- Image de Jérusalem (Kotel) en parallax -->
     <div class="parallax-bg" style="background-image: url('assets/images/hero-kotel.jpg');"></div>
-    <div class="absolute inset-0 bg-gradient-to-b from-night/85 via-night/70 to-night/95"></div>
+
+    <!-- Voile vertical léger (transition douce vers la section suivante) -->
+    <div class="absolute inset-0 bg-gradient-to-b from-night/35 via-night/30 to-night/85"></div>
+
+    <!-- Voile gauche → droite renforcé sur desktop pour lisibilité du titre -->
+    <div class="absolute inset-0 bg-gradient-to-r from-night/70 via-night/40 to-transparent hidden lg:block"></div>
 
     <!-- Decorative gold rule -->
     <div class="absolute top-24 left-1/2 -translate-x-1/2 w-px h-16 bg-gold/50 hidden md:block"></div>
